@@ -1,12 +1,6 @@
 import { useState } from "react";
 
 export default function App(){
-const [list, setList] = useState([]);
-const [name, setName] = useState("");
-const [watchlist, setWatchlist] = useState([]);
-const [ratingFilter, setRatingFilter] = useState("");
-const [genreFilter, setGenreFilter] = useState("");
-
 const moviesData = [
   { id: 1, title: "The Matrix", rating: 8.7, genre: "Action", year: 1999 },
   { id: 2, title: "Inception", rating: 8.8, genre: "Action", year: 2010 },
@@ -28,43 +22,116 @@ const moviesData = [
   { id: 18, title: "Parasite", rating: 8.6, genre: "Drama", year: 2019 },
 ];
 
-setList([...list, moviesData]);
+const [list] = useState(moviesData);
+const [name, setName] = useState("");
+const [watchlist, setWatchlist] = useState([]);
+const [ratingFilter, setRatingFilter] = useState("All");
+const [genreFilter, setGenreFilter] = useState("All");
 
-console.log(name);
+const filtered = list.filter(movie => {
+    const filterName = movie.title.toLowerCase().includes(name.toLowerCase());
+    const filterGenre = genreFilter === "All" || genreFilter === movie.genre;
+    const filterRating = ratingFilter === "All" || 
+                        (ratingFilter === "9+" && movie.rating >= 9) ||
+                        (ratingFilter === "8+" && movie.rating >= 8) ||
+                        (ratingFilter === "7+" && movie.rating >= 7);
 
-const buttonClass = "px-4 bg-slate-600 focus:bg-slate-700 text-white rounded-full";
 
+    return filterName && filterGenre && filterRating;
+})
+
+const buttonClass = "px-4 py-2 rounded-full transition hover:scale-105";
+const activeClass = "bg-purple-600 text-white";
+const inactiveClass = "bg-slate-600 text-white";
+
+const isInWatchlist = (movieId) => {
+  return watchlist.some(m => m.id === movieId);
+};
 
 return (
-    <div className="min-h-screen w-full p-4 bg-gradient-to-t from-gray-800 to-gray-700">
+    <div className="min-h-screen w-full p-4 bg-gradient-to-t from-gray-800 via-purple-900 to-gray-700">
         
             <header className="">
-                  <h1 className="p-2 my-6 text-3xl rounded-lg text-gray-950 text-center font-semibold font-sans">Movie Search</h1>
+                  <h1 className="my-8 md:my-20 md:text-6xl text-5xl rounded-lg text-gray-200 text-center font-bold font-sans">Movie Search</h1>
             </header>
 
-        <form onSubmit={(e)=>{ e.preventDefault(), setName(e.target.value)}}    className="bg-gray-800 pt-6 px-3 pb-2 mx-auto my-4 rounded-lg flex">
+        <div className="md:max-w-3xl bg-gray-800 pt-6 p-2 mx-auto my-4 rounded-lg flex items-center">
             <label htmlFor="movieName"></label>
             <input value={name}
                    onChange={(e)  => setName(e.target.value)}
-                   className="w-full bg-gray-800 p-2 h-14 border-none outline-none text-gray-100 rounded-sm" type="search" id="movieName" name="query" placeholder="Enter search terms..." autoFocus required/>
-            <button type="submit">🔍</button>
-        </form>
+                   className="w-full md:max-w-2xl bg-gray-800 px-4 h-14 border-none outline-none text-gray-100 rounded-sm" 
+                   type="search" id="movieName" 
+                   name="query" placeholder="Search Movies..." 
+                   autoFocus/>
+            <span className="text-2xl">🔍</span>
+        </div>
 
-        <div className="space-y-2 mx-2">
-            <h2 className="text-gray-200 font-medium">Select Genre :</h2>
-            <div className="flex gap-2 p-2 flex-wrap justify-right items-start rounded-lg w-fit outline-double  mx-auto">
-            <button className={buttonClass} onClick={()=>setGenreFilter("All")}>All</button>
-            <button className={buttonClass} onClick={()=>setGenreFilter("Sci-Fi")}>Sci-Fi</button>
-            <button className={buttonClass} onClick={()=>setGenreFilter("Action")}>Action</button>
-            <button className={buttonClass} onClick={()=>setGenreFilter("Drama")}>Drama</button>
-            <button className={buttonClass} onClick={()=>setGenreFilter("Comedy")}>Comedy</button>
+        <div className="space-y-2 m-2">
+           
+            <div className="flex gap-2 p-2 flex-wrap justify-right items-start rounded-xl md:justify-center md:items-center md:gap-4">
+            <button className={`${buttonClass} ${genreFilter === "All"? activeClass : inactiveClass} `} onClick={()=>setGenreFilter("All")}>All</button>
+            <button className={`${buttonClass} ${genreFilter === "Sci-Fi"? activeClass : inactiveClass} `} onClick={()=>setGenreFilter("Sci-Fi")}>Sci-Fi</button>
+            <button className={`${buttonClass} ${genreFilter === "Action"? activeClass : inactiveClass} `} onClick={()=>setGenreFilter("Action")}>Action</button>
+            <button className={`${buttonClass} ${genreFilter === "Drama"? activeClass : inactiveClass} `} onClick={()=>setGenreFilter("Drama")}>Drama</button>
+            <button className={`${buttonClass} ${genreFilter === "Comedy"? activeClass : inactiveClass} `} onClick={()=>setGenreFilter("Comedy")}>Comedy</button>
             </div>
-             <h2 className="text-gray-200 font-medium">Select Rating :</h2>
-            <div className="flex gap-4 p-2 justify-center items-center outline-double rounded-full w-fit">
-            <button className={buttonClass} onClick={()=>setRatingFilter("9+")}>9+</button>
-            <button className={buttonClass} onClick={()=>setRatingFilter("8+")}>8+</button>
-            <button className={buttonClass} onClick={()=>setRatingFilter("7+")}>7+</button>
+        
+            <div className="flex gap-4 p-2 justify-normal items-center rounded-full md:justify-center md:items-center">
+            <button className={`${buttonClass} ${ratingFilter === "All"? activeClass : inactiveClass} `} onClick={()=>setRatingFilter("All")}>All</button>
+            <button className={`${buttonClass} ${ratingFilter === "9+"? activeClass : inactiveClass} `} onClick={()=>setRatingFilter("9+")}>9+</button>
+            <button className={`${buttonClass} ${ratingFilter === "8+"? activeClass : inactiveClass} `} onClick={()=>setRatingFilter("8+")}>8+</button>
+            <button className={`${buttonClass} ${ratingFilter === "7+"? activeClass : inactiveClass} `} onClick={()=>setRatingFilter("7+")}>7+</button>
             </div>
+        </div>
+
+        <h2 className="m-6 md:text-3xl text-white text-2xl font-medium text-center">Search Results ({filtered.length} movies)</h2>
+        <div className="w-full space-y-2 space-x-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:max-w-5xl md:mx-auto">
+            {filtered.length === 0 ? (
+                    <p className="text-gray-400 text-center py-8 md:text-xl">No movies found</p>
+            ):(
+                filtered.map(movie =>( 
+                <div key={movie.id} className="w-full md:w-auto flex flex-col items-center space-y-2 bg-gray-800 p-4 rounded-lg text-white">
+                <h3 className="text-xl font-bold">{movie.title}</h3>
+                <p>Rating: {movie.rating} | Genre: {movie.genre} | Year: {movie.year}</p>
+                <button 
+                    className={`w-1/2 py-2 rounded-lg font-semibold transition ${
+                    isInWatchlist(movie.id) 
+                      ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
+                      : 'bg-green-500 hover:bg-green-600 text-white'
+                    }`}
+                    onClick={() => {
+                        if (!isInWatchlist(movie.id)) {
+                              setWatchlist([...watchlist, movie]);
+                        }
+                     }}
+                    disabled={isInWatchlist(movie.id)}
+                >
+                    {isInWatchlist(movie.id) ? "Added ✓" : "Add to Watchlist"}
+                </button>
+
+                </div>
+                ))
+            )
+
+            }
+        </div>
+        
+        <h2 className="m-6 text-white text-2xl font-medium text-center">My Watchlist ({watchlist.length} movies)</h2>
+        <div className="w-full md:max-w-2xl md:mx-auto space-y-2">
+            {  watchlist.length === 0 ? (
+                <p className="text-gray-400 text-center py-8 md:text-xl">Nothing yet!</p>
+            ) :
+            ( watchlist.map(movie =>( 
+                <div key={movie.id} className="flex flex-col justify-center items-center bg-gray-800 p-4 rounded-lg text-white space-y-2">
+                <h3 className="text-xl font-bold">{movie.title}</h3>
+                <p>Rating: {movie.rating} | Genre: {movie.genre} | Year: {movie.year}</p>
+                <button 
+                className="w-fit bg-red-500 px-4 py-2 rounded-lg font-medium"
+                onClick={()=> setWatchlist(watchlist.filter(film => movie.id !== film.id))}
+                >Remove</button>
+                </div>
+                )))
+                }
         </div>
 
       
