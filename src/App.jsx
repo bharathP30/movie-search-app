@@ -1,11 +1,34 @@
 import { useState } from "react";
 
 export default function App(){
-const [list] = useState([]);
+const [list, setList] = useState([]);
 const [name, setName] = useState("");
 const [watchlist, setWatchlist] = useState([]);
 const [ratingFilter, setRatingFilter] = useState("");
 const [genreFilter, setGenreFilter] = useState("");
+
+const moviesData = [
+  { id: 1, title: "The Matrix", rating: 8.7, genre: "Action", year: 1999 },
+  { id: 2, title: "Inception", rating: 8.8, genre: "Action", year: 2010 },
+  { id: 3, title: "Interstellar", rating: 8.6, genre: "Sci-Fi", year: 2014 },
+  { id: 4, title: "The Dark Knight", rating: 9.0, genre: "Action", year: 2008 },
+  { id: 5, title: "Pulp Fiction", rating: 8.9, genre: "Drama", year: 1994 },
+  { id: 6, title: "Forrest Gump", rating: 8.8, genre: "Drama", year: 1994 },
+  { id: 7, title: "The Shawshank Redemption", rating: 9.3, genre: "Drama", year: 1994 },
+  { id: 8, title: "The Godfather", rating: 9.2, genre: "Drama", year: 1972 },
+  { id: 9, title: "Goodfellas", rating: 8.7, genre: "Drama", year: 1990 },
+  { id: 10, title: "The Hangover", rating: 7.7, genre: "Comedy", year: 2009 },
+  { id: 11, title: "Superbad", rating: 7.6, genre: "Comedy", year: 2007 },
+  { id: 12, title: "Step Brothers", rating: 6.9, genre: "Comedy", year: 2008 },
+  { id: 13, title: "Avatar", rating: 7.8, genre: "Sci-Fi", year: 2009 },
+  { id: 14, title: "Blade Runner 2049", rating: 8.0, genre: "Sci-Fi", year: 2017 },
+  { id: 15, title: "The Avengers", rating: 8.0, genre: "Action", year: 2012 },
+  { id: 16, title: "Guardians of the Galaxy", rating: 8.0, genre: "Action", year: 2014 },
+  { id: 17, title: "Dune", rating: 8.0, genre: "Sci-Fi", year: 2021 },
+  { id: 18, title: "Parasite", rating: 8.6, genre: "Drama", year: 2019 },
+];
+
+setList([...list, moviesData]);
 
 console.log(name);
 
