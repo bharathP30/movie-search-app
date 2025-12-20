@@ -90,11 +90,11 @@ return (
         </div>
 
         <h2 className="m-6 md:text-3xl text-white text-2xl font-medium text-center">Search Results ({filtered.length} movies)</h2>
-       
+         <div className="w-full space-y-2 space-x-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:max-w-5xl md:mx-auto">
             {filtered.length === 0 ? (
-                    <p className="text-gray-400 text-center py-8 md:text-xl">No movies found</p>
+                    <p className="text-gray-400 text-center py-8 md:text-xl col-span-full">No movies found</p>
             ):(
-       <div className="w-full space-y-2 space-x-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:max-w-5xl md:mx-auto">
+       
                 filtered.map(movie =>( 
                 <div key={movie.id} className="w-full md:w-auto flex flex-col items-center space-y-2 bg-gray-800 p-4 rounded-lg text-white">
                 <h3 className="text-xl font-bold">{movie.title}</h3>
