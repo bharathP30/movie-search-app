@@ -29,6 +29,11 @@ const [ratingFilter, setRatingFilter] = useState("All");
 const [genreFilter, setGenreFilter] = useState("All");
 
 const filtered = list.filter(movie => {
+
+   if (name.trim().length === 0) {
+        return false;
+    }
+  
     const filterName = movie.title.toLowerCase().includes(name.toLowerCase());
     const filterGenre = genreFilter === "All" || genreFilter === movie.genre;
     const filterRating = ratingFilter === "All" || 
